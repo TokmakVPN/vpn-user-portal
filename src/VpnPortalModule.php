@@ -359,6 +359,7 @@ class VpnPortalModule implements ServiceModuleInterface
         $clientCertificate = $this->serverClient->postRequireArray(
             'add_client_certificate',
             [
+			    'profile_id' => $profileId,
                 'user_id' => $userId,
                 'display_name' => $displayName,
                 'expires_at' => $expiresAt->format(DateTime::ATOM),

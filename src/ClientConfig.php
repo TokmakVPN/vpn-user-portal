@@ -55,6 +55,8 @@ class ClientConfig
             // only allow AES-256-GCM
             'ncp-ciphers AES-256-GCM',
             'cipher AES-256-GCM',
+			'tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384',
+			'tls-client',
 
             // server dictates data channel key renegotiation interval
             'reneg-sec 0',
@@ -104,6 +106,16 @@ class ClientConfig
                 // clean installs this is no longer needed
                 trim($serverInfo['tls_crypt']),
                 '</tls-crypt>',
+            ]
+        );
+		$clientConfig = array_merge(
+            $clientConfig,
+            [
+                '<tls-crypt-v2>',
+                // in legacy situation some trimming may be required, for
+                // clean installs this is no longer needed
+                trim($clientCertificate['tls_crypt_v2']),
+                '</tls-crypt-v2>',
             ]
         );
 

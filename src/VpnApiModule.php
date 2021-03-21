@@ -128,14 +128,16 @@ class VpnApiModule implements ServiceModuleInterface
             function (Request $request, array $hookData) {
                 /** @var \LC\Portal\OAuth\VpnAccessTokenInfo */
                 $accessTokenInfo = $hookData['auth'];
+				$profileId = $hookData['profile_id'];
                 try {
-                    $clientCertificate = $this->getCertificate($accessTokenInfo);
+                    $clientCertificate = $this->getCertificate($accessTokenInfo, $profileId);
 
                     return new ApiResponse(
                         'create_keypair',
                         [
                             'certificate' => $clientCertificate['certificate'],
                             'private_key' => $clientCertificate['private_key'],
+							'tls_crypt-v2' => $clientCertificate['tls_crypt-v2'],
                         ]
                     );
                 } catch (InputValidationException $e) {
@@ -282,12 +284,13 @@ class VpnApiModule implements ServiceModuleInterface
     /**
      * @return array
      */
-    private function getCertificate(VpnAccessTokenInfo $accessTokenInfo)
+    private function getCertificate(VpnAccessTokenInfo $accessTokenInfo, $profileId)
     {
         // create a certificate
         return $this->serverClient->postRequireArray(
             'add_client_certificate',
             [
+			    'profile_id' => $profileId,
                 'user_id' => $accessTokenInfo->getUserId(),
                 // we won't show the Certificate entry anyway on the
                 // "Certificates" page for certificates downloaded through the
