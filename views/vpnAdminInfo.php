@@ -78,6 +78,8 @@
             <tr><th><?=$this->t('Management IP'); ?></th><td><code><?=$this->e($managementIp); ?></code></td></tr>
 <?php endif; ?>
 
+<tr><th><?=$this->t('TLS Protection'); ?></th><td><?=$this->e($profileConfig->tlsProtection()); ?></td></tr>
+
 <?php if (null !== $dnsDomain = $profileConfig->dnsDomain()): ?>
             <tr><th><?=$this->t('DNS Domain'); ?></th><td><code><?=$this->e($dnsDomain); ?></code></td></tr>
 <?php endif; ?>

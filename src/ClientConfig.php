@@ -98,26 +98,31 @@ class ClientConfig
             );
         }
 
-        $clientConfig = array_merge(
-            $clientConfig,
-            [
-                '<tls-crypt>',
-                // in legacy situation some trimming may be required, for
-                // clean installs this is no longer needed
-                trim($serverInfo['tls_crypt']),
-                '</tls-crypt>',
-            ]
-        );
-		$clientConfig = array_merge(
-            $clientConfig,
-            [
-                '<tls-crypt-v2>',
-                // in legacy situation some trimming may be required, for
-                // clean installs this is no longer needed
-                trim($clientCertificate['tls_crypt_v2']),
-                '</tls-crypt-v2>',
-            ]
-        );
+        if ('tls-crypt' === $profileConfig->tlsProtection()) {
+            $clientConfig = array_merge(
+                $clientConfig,
+                [
+                    '<tls-crypt>',
+                    // in legacy situation some trimming may be required, for
+                    // clean installs this is no longer needed
+                    trim($serverInfo['tls_crypt']),
+                    '</tls-crypt>',
+                ]
+            );
+        }
+
+		if ('tls-crypt-v2' === $profileConfig->tlsProtection()) {
+            $clientConfig = array_merge(
+                $clientConfig,
+                [
+                    '<tls-crypt-v2>',
+                    // in legacy situation some trimming may be required, for
+                    // clean installs this is no longer needed
+                    trim($clientCertificate['tls_crypt_v2']),
+                    '</tls-crypt-v2>',
+                ]
+            );
+        }
 
         // remote entries
         foreach ($remoteProtoPortList as $remoteProtoPort) {
