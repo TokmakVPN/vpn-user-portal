@@ -40,10 +40,10 @@ class OAuthClientInfo
                 'require_approval' => true,
             ],
             // Android
-            'org.eduvpn.app.android' => [
+            'org.tokmakvpn.app.android' => [
                 'redirect_uri_list' => [
-                    'org.eduvpn.app:/api/callback',
-                    'https://android.app.eduvpn.org/api/callback',  // Android >= 6
+                    'org.tokmakvpn.app:/api/callback',
+                    'https://android.app.tokmakvpn.org/api/callback',  // Android >= 6
                 ],
                 'display_name' => 'eduVPN for Android',
                 'require_approval' => true,

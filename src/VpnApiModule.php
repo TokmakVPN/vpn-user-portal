@@ -128,7 +128,7 @@ class VpnApiModule implements ServiceModuleInterface
             function (Request $request, array $hookData) {
                 /** @var \LC\Portal\OAuth\VpnAccessTokenInfo */
                 $accessTokenInfo = $hookData['auth'];
-				$profileId = $hookData['profile_id'];
+				$profileId = InputValidation::profileId($request->requirePostParameter('profile_id'));
                 try {
                     $clientCertificate = $this->getCertificate($accessTokenInfo, $profileId);
 
@@ -137,7 +137,7 @@ class VpnApiModule implements ServiceModuleInterface
                         [
                             'certificate' => $clientCertificate['certificate'],
                             'private_key' => $clientCertificate['private_key'],
-							'tls_crypt-v2' => $clientCertificate['tls_crypt-v2'],
+							'tls_crypt_v2' => $clientCertificate['tls_crypt_v2'],
                         ]
                     );
                 } catch (InputValidationException $e) {
