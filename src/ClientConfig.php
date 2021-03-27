@@ -48,15 +48,14 @@ class ClientConfig
             'remote-cert-tls server',
 
             'verb 3',
+            'sndbuf 2000000',
+            'rcvbuf 2000000',
+            'mssfix 0',
+            'tun-mtu 60000',
+            'fragment 0',
 
             // wait this long (seconds) before trying the next server in the list
             'server-poll-timeout 10',
-
-            // only allow AES-256-GCM
-            'ncp-ciphers AES-256-GCM',
-            'cipher AES-256-GCM',
-			'tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384',
-			'tls-client',
 
             // server dictates data channel key renegotiation interval
             'reneg-sec 0',
@@ -67,7 +66,25 @@ class ClientConfig
             trim($serverInfo['ca']),
             '</ca>',
         ];
-
+        if ($profileConfig->stunnel()) {
+            $clientConfig = array_merge(
+                $clientConfig,
+                [
+                    'ncp-ciphers none',
+                    'cipher none',
+                    'ncp-disable',
+                    'auth none',
+                ]
+            );
+        } else {
+            $clientConfig = array_merge(
+                $clientConfig,
+                [
+                    'tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384',
+			        'tls-client',
+			        'remote-cert-tls server',
+                ]
+            );
         if ($profileConfig->tlsOneThree()) {
             // for TLSv1.3 we don't care about the tls-ciphers, they are all
             // fine, let the client choose
@@ -80,6 +97,8 @@ class ClientConfig
             $clientConfig[] = 'tls-version-min 1.2';
             $clientConfig[] = 'tls-cipher TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384';
         }
+        }
+        
 
         // API 1, if clientCertificate is provided, we add it directly to the
         // configuration file, XXX can be removed for API 2
