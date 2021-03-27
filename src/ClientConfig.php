@@ -128,6 +128,9 @@ class ClientConfig
         foreach ($remoteProtoPortList as $remoteProtoPort) {
             $clientConfig[] = sprintf('remote %s %d %s', $hostName, (int) substr($remoteProtoPort, 4), substr($remoteProtoPort, 0, 3));
         }
+		if ($profileConfig->stunnel()) {
+			$clientConfig[] = sprintf('route %s 255.255.255.255 net_gateway', $hostName);
+		}
 
         return implode(PHP_EOL, $clientConfig);
     }
