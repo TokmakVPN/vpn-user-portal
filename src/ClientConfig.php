@@ -48,11 +48,6 @@ class ClientConfig
             'remote-cert-tls server',
 
             'verb 3',
-            'sndbuf 2000000',
-            'rcvbuf 2000000',
-            'mssfix 0',
-            'tun-mtu 60000',
-            'fragment 0',
 
             // wait this long (seconds) before trying the next server in the list
             'server-poll-timeout 10',
@@ -66,6 +61,7 @@ class ClientConfig
             trim($serverInfo['ca']),
             '</ca>',
         ];
+		$clientConfig = array_merge($clientConfig, $profileConfig->AddonConfigClient());
         if ($profileConfig->stunnel()) {
             $clientConfig = array_merge(
                 $clientConfig,
